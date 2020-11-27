@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--
+    <meta http-equiv="refresh" content="3;http://www.php.com"/>
+    -->
+    <title>Document</title>
+    <style>
+        body{
+            text-align: center;
+            font-family: '微软雅黑';
+            font-size: 18px;
+        }
+        #success,#error{
+            font-size: 36px;
+            margin: 10px auto;
+        }
+        #success{
+            color: #090;
+        }
+        #error{
+            color: #F00;
+        }
+    </style>
+</head>
+<body>
+<img src="/Public/images/<?=$flag?>.fw.png">
+<div id='<?=$flag?>'><?=$info?></div>
+<div><span id='t'><?=$time?></span>秒以后跳转</div>
+</body>
+</html>
+<script>
+    window.onload=function(){
+        var t = <?=$time?>;
+        setInterval(()=>{
+            document.querySelector('#t').innerHTML = --t
+            if(t==0){
+                location.href = '<?=$url?>'
+            }
+        },1000)
+    }
+</script>
