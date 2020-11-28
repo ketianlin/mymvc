@@ -4,9 +4,8 @@ namespace Controller\Admin;
 use Core\Model;
 use Model\ProductsModel;
 
-class ProductsController
+class ProductsController extends BaseController
 {
-    use \Traits\Jump;
     //获取商品列表
     public function listAction(){
         //实例化模型
