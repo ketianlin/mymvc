@@ -7,7 +7,7 @@ namespace Controller\Admin;
 class AdminController extends BaseController
 {
     public function adminAction(){
-        var_dump($_SESSION);exit;
+//        var_dump($_SESSION);exit;
         require __VIEW__.'admin.html';
     }
     public function topAction(){

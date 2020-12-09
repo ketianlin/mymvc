@@ -1,12 +1,21 @@
 <?php
 namespace Controller\Admin;
 
+use Lib\Captcha;
+
 class LoginController extends BaseController
 {
     //登录
     public function loginAction(){
         //第二步：执行登陆逻辑
         if(!empty($_POST)){
+            //校验验证码
+            $captcha=new Captcha();
+            if(!$captcha->check($_POST['passcode'])){
+                $this->error ('index.php?p=Admin&c=Login&a=login', '验证码错误');
+                return;
+            }
+
             $model=new \Model\UserModel();
             if($info=$model->getUserByNameAndPwd($_POST['username'], $_POST['password'])){
                 $_SESSION['user']=$info;    //将用户信息保存到会话中
@@ -14,6 +23,7 @@ class LoginController extends BaseController
 
                 $this->success('index.php?p=Admin&c=Admin&a=admin', '登陆成功');
             }else{
+                var_dump($info);exit;
                 $this->error('index.php?p=Admin&c=Login&a=login', '登陆失败，请重新登陆');
             }
             exit;
@@ -43,5 +53,11 @@ class LoginController extends BaseController
     public function checkUserAction(){
         $model=new \Model\UserModel();
         echo $model->isExists($_GET['username']);
+    }
+
+    //验证码
+    public function verifyAction(){
+        $captcha=new \Lib\Captcha();
+        $captcha->entry();
     }
 }
