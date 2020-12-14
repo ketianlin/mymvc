@@ -2,6 +2,8 @@
 namespace Controller\Admin;
 
 use Lib\Captcha;
+use Lib\Image;
+use Lib\Upload;
 
 class LoginController extends BaseController
 {
@@ -20,10 +22,14 @@ class LoginController extends BaseController
             if($info=$model->getUserByNameAndPwd($_POST['username'], $_POST['password'])){
                 $_SESSION['user']=$info;    //将用户信息保存到会话中
                 $model->updateLoginInfo();   //更新登陆信息
-
+                if (isset($_POST['remember'])){
+                    $time = time() + 3600 * 24 * 7;//记录7天
+                    setcookie('name', $_POST['username'], $time);
+                    setcookie('pwd', $_POST['password'], $time);
+                }
                 $this->success('index.php?p=Admin&c=Admin&a=admin', '登陆成功');
             }else{
-                var_dump($info);exit;
+                var_dump($info);
                 $this->error('index.php?p=Admin&c=Login&a=login', '登陆失败，请重新登陆');
             }
             exit;
@@ -36,6 +42,20 @@ class LoginController extends BaseController
     public function registerAction(){
         //第二步：执行注册逻辑
         if(!empty($_POST)){
+            //文件上传
+            $path = $GLOBALS['config']['app']['path'];
+            $size = $GLOBALS['config']['app']['size'];
+            $type = $GLOBALS['config']['app']['type'];
+            $upload = new Upload($path, $size, $type);
+            $filepath = $upload->uploadOne($_FILES['face']);
+            if ( ! $filepath){
+                $this->error('?p=Admin&c=Login&a=register', $upload->getError());
+                exit;
+            }
+            //生成缩略图
+            $image = new Image();
+            $data['user_face'] = $image->thumb($path.$filepath, 's1_');
+//            $data['user_face'] = $image->thumb2($path.$filepath, 's2_');
             $data['user_name']=$_POST['username'];
             $data['user_pwd']=md5(md5($_POST['password']).$GLOBALS['config']['app']['key']);
             $model=new \Core\Model('user');
@@ -59,5 +79,10 @@ class LoginController extends BaseController
     public function verifyAction(){
         $captcha=new \Lib\Captcha();
         $captcha->entry();
+    }
+
+    public function logoutAction(){
+        session_destroy();
+        header('location:?p=Admin&c=Login&a=login');
     }
 }

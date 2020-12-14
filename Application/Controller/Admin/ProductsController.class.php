@@ -12,8 +12,12 @@ class ProductsController extends BaseController
         $model = new ProductsModel();
 //        $rs = $model->update(['proname'=>'fuck456', 'proprice'=>456, 'proID'=>86]);
         $list = $model->select(['proprice'=>['lt', 10]]);
+
+        $this->smarty->assign('list', $list);
+        $this->smarty->display('products_list.html');
+
         //加载视图
-        require __VIEW__.'products_list.html';
+//        require __VIEW__.'products_list.html';
     }
 
     //添加商品

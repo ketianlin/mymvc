@@ -19,6 +19,7 @@ class BaseController extends Controller
         }
         if(empty($_SESSION['user'])){
             $this->error('index.php?p=Admin&c=Login&a=login', '您没有登录');
+            exit;
         }
     }
 }

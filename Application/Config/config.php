@@ -14,6 +14,11 @@ return [
     'app'=>[
         'dp'    =>  'Admin',        //默认平台
         'dc'    =>  'Products',     //默认控制器
-        'da'    =>  'list'          //默认方法
+        'da'    =>  'list',          //默认方法
+
+        'key'   =>  'mymvc',       //加密秘钥
+        'path'  =>  './Public/Uploads/',
+        'size'  =>  1234567,
+        'type'  =>  ['image/png','image/jpeg','image/gif']
     ]
 ];

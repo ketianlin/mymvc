@@ -43,7 +43,8 @@ class Captcha
     }
     //验证码比较
     public function check($code){
-        return strtoupper($code)== strtoupper($_SESSION['code']);
+//        var_dump(strtoupper($code)== strtoupper($_SESSION['code']));exit;
+        return strtoupper($code) == strtoupper($_SESSION['code']);
     }
 
 }

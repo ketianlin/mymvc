@@ -4,3 +4,6 @@
 .idea/modules.xml
 .idea/mymvc.xml
 .idea/workspace.xml
+/Public/Uploads/
+*.html.php
+/Application/Viewc/

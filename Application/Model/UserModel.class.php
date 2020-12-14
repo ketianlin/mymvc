@@ -17,6 +17,7 @@ class UserModel extends Model
             'user_pwd'   => md5(md5($pwd).$GLOBALS['config']['app']['key'])
         );
         $info=$this->select($cond);
+
         if(!empty($info))
             return $info[0];
         return array();
