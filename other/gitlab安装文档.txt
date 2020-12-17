@@ -27,7 +27,8 @@ docker run --detach --publish 8443:443 --publish 8090:80 --name gitlab --restart
 
 
 
-
+docker run --name gitlab -d --link postgresql:postgresql --link redis:redisio --hostname 192.168.1.73 -p 10022:22 -p 8899:80 -e 'GITLAB_PORT=8899' -e 'GITLAB_SSH_PORT=10022' -e 'GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_HOST=192.168.1.73' -e 'SMTP_AUTHENTICATION=login' -v /home/root/opt/gitlab/data:/home/git/data docker.io/gitlab/gitlab-ce
+systemctl stop firewalld.service
 
 docker pull sameersbn/redis
 docker pull sameersbn/postgresql
@@ -56,7 +57,12 @@ $ vim /home/gitlab/config/gitlab.rb
 # 配置http协议所使用的访问地址,不加端口号默认为80
 external_url 'http://192.168.199.231'
 
+
+docker run --name gitlab -d --link postgresql:postgresql --link redis:redisio --hostname 192.168.1.73 -p 10022:22 -p 8899:80 -e 'GITLAB_PORT=8899' -e 'GITLAB_SSH_PORT=10022' -e 'GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_HOST=192.168.1.73' -e 'SMTP_AUTHENTICATION=login' -v /home/root/opt/gitlab/data:/home/git/data docker.io/gitlab/gitlab-ce
+
+systemctl stop firewalld.service
 # 配置ssh协议所使用的访问地址和端口
-gitlab_rails['gitlab_ssh_host'] = '192.168.199.231'
-gitlab_rails['gitlab_shell_ssh_port'] = 222 # 此端口是run时22端口映射的222端口
+unicorn['port'] = 8899
+gitlab_rails['gitlab_ssh_host'] = '192.168.1.73'
+gitlab_rails['gitlab_shell_ssh_port'] = 10022 # 此端口是run时22端口映射的222端口
 :wq #保存配置文件并退出
