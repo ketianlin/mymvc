@@ -60,6 +60,11 @@ external_url 'http://192.168.199.231'
 
 docker run --name gitlab -d --link postgresql:postgresql --link redis:redisio --hostname 192.168.1.73 -p 10022:22 -p 8899:80 -e 'GITLAB_PORT=8899' -e 'GITLAB_SSH_PORT=10022' -e 'GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_HOST=192.168.1.73' -e 'SMTP_AUTHENTICATION=login' -v /home/root/opt/gitlab/data:/home/git/data docker.io/gitlab/gitlab-ce
 
+
+docker run --name gitlab -d --link postgresql:postgresql --link redis:redisio --hostname 192.168.1.173 -p 10022:22 -p 8899:80 -e 'GITLAB_PORT=8899' -e 'GITLAB_SSH_PORT=10022' -e 'GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alpha-numeric-string' -e 'GITLAB_HOST=192.168.1.173' -e 'SMTP_AUTHENTICATION=login' -v /home/root/opt/gitlab/data:/home/git/data docker.io/gitlab/gitlab-ce
+
+
+
 systemctl stop firewalld.service
 # 配置ssh协议所使用的访问地址和端口
 unicorn['port'] = 8899
