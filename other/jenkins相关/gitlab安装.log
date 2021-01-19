@@ -1,0 +1,71 @@
+-------------------- gitlab安装 --------------------
+
+1. 安装相关依赖
+yum -y install policycoreutils openssh-server openssh-clients postfix
+
+2. 启动ssh服务&设置为开机启动
+systemctl enable sshd && sudo systemctl start sshd
+
+3. 设置postfix开机自启，并启动，postfix支持gitlab发信功能
+systemctl enable postfix && sudo systemctl start postfix
+
+查看防火墙
+systemctl status firewalld
+
+4. 开放ssh以及http服务，然后重新加载防火墙列表
+firewall-cmd --add-service=ssh --permanent
+firewall-cmd --add-service=http --permanent
+重新加载防火墙
+firewall-cmd --reload
+
+如果关闭防火墙就不需要做以上配置
+5. 下载gitlab包，并且安装
+在线下载安装包：
+wget https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el6/gitlab-ce-12.4.2-ce.0.el6.x86_64.rpm
+安装：
+--rpm -i gitlab-ce-12.4.2-ce.0.el6.x86_64.rpm
+
+安装上传软件
+yum -y install rzlsz
+
+开始安装gitlab的rpm包
+如果报下面这个错
+warning: gitlab-ce-12.4.2-ce.0.el6.x86_64.rpm: Header V4 RSA/SHA1 Signature, key ID f27eab47: NOKEY
+error: Failed dependencies:
+	policycoreutils-python is needed by gitlab-ce-12.4.2-ce.0.el6.x86_64
+
+那就要先安装依赖
+yum install -y policycoreutils-python
+
+然后再安装
+rpm -ivh gitlab-ce-12.4.2-ce.0.el6.x86_64.rpm
+
+安装完成后会提示
+Thank you for installing GitLab!
+GitLab was unable to detect a valid hostname for your instance.
+Please configure a URL for your GitLab instance by setting `external_url`
+configuration in /etc/gitlab/gitlab.rb file.
+Then, you can start your GitLab instance by running the following command:
+  sudo gitlab-ctl reconfigure
+
+For a comprehensive list of configuration options please see the Omnibus GitLab readme
+https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md
+
+
+6. 修改gitlab配置
+vi /etc/gitlab/gitlab.rb
+修改gitlab访问地址和端口，默认为80，我们改为82
+external_url 'http://192.168.66.100:82'
+nginx['listen_port'] = 82
+
+7. 重载配置及启动gitlab
+gitlab-ctl reconfigure
+gitlab-ctl restart
+
+8. 把端口添加到防火墙
+firewall-cmd --zone=public --add-port=82/tcp --permanent
+firewall-cmd --reload
+
+查看已开放端口：（82 即是已开放端口）
+firewall-cmd --list-all
+

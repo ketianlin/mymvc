@@ -1,0 +1,5 @@
+持续集成环境(1)-Jenkins安装
+1）安装JDK
+Jenkins需要依赖JDK，所以先安装JDK1.8
+yum install java-1.8.0-openjdk* -y
+安装目录为：/usr/lib/jvm
