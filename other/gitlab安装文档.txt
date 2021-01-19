@@ -71,3 +71,11 @@ unicorn['port'] = 8899
 gitlab_rails['gitlab_ssh_host'] = '192.168.1.73'
 gitlab_rails['gitlab_shell_ssh_port'] = 10022 # 此端口是run时22端口映射的222端口
 :wq #保存配置文件并退出
+
+
+---------------------------------------------------------------------------
+https://www.cnblogs.com/hujunwei/p/13176994.html   参考地址
+
+docker pull jenkinsci/blueocean
+docker create --name jenkins -u root -p 8889:8080 --privileged=true -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v /home/jenkins:/home docker.io/jenkinsci/blueocean
+
