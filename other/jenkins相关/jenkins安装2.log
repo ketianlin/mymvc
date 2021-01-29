@@ -3,3 +3,75 @@
 Jenkins需要依赖JDK，所以先安装JDK1.8
 yum install java-1.8.0-openjdk* -y
 安装目录为：/usr/lib/jvm
+
+2）获取jenkins安装包
+下载页面：https://jenkins.io/zh/download/
+安装文件：jenkins-2.190.3-1.1.noarch.rpm
+
+3）把安装包上传到192.168.66.101服务器，进行安装
+rpm -ivh jenkins-2.190.3-1.1.noarch.rpm
+
+4）修改Jenkins配置
+vi /etc/syscofig/jenkins
+
+修改内容如下：
+JENKINS_USER="root"
+JENKINS_PORT="8888"
+
+5）启动Jenkins
+systemctl start jenkins
+
+6）打开浏览器访问
+http://192.168.66.101:8888
+
+注意：本服务器把防火墙关闭了，如果开启防火墙，需要在防火墙添加端口
+firewall-cmd --zone=public --add-port=8888/tcp --permanent
+firewall-cmd --reload
+
+7）获取并输入admin账户密码
+cat /var/lib/jenkins/secrets/initialAdminPassword
+
+8）跳过插件安装
+因为Jenkins插件需要连接默认官网下载，速度非常慢，而且经过会失败，所以我们暂时先跳过插件安装
+
+9）添加一个管理员账户，并进入Jenkins后台
+
+持续集成环境(2)-Jenkins插件管理
+Jenkins本身不提供很多功能，我们可以通过使用插件来满足我们的使用。例如从Gitlab拉取代码，使用
+Maven构建项目等功能需要依靠插件完成。接下来演示如何下载插件。
+
+修改Jenkins插件下载地址
+Jenkins国外官方插件地址下载速度非常慢，所以可以修改为国内插件地址：
+Jenkins->Manage Jenkins->Manage Plugins，点击Available
+
+这样做是为了把Jenkins官方的插件列表下载到本地，接着修改地址文件，替换为国内插件地址
+cd /var/lib/jenkins/updates
+
+sed -i 's/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g' default.json && sed -i 's/http:\/\/www.google.com/https:\/\/www.baidu.com/g' default.json
+
+
+最后，Manage Plugins点击Advanced，把Update Site改为国内插件下载地址
+https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json
+
+
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+export MAVEN_HOME=/opt/maven
+export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin
+
+
+http://maven.aliyun.com/nexus/content/groups/public/
+
+
+yum install java-1.8.0-openjdk* -y
+
+
+
+
+
+
+
+git提交步骤
+
+commit
+fatch
+rebase
