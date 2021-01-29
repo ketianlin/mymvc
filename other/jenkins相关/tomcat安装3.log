@@ -1,0 +1,36 @@
+把Tomcat压缩包上传到192.168.66.102服务器
+
+yum install java-1.8.0-openjdk* -y
+安装目录为：/usr/lib/jvm
+
+
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+firewall-cmd --reload
+
+
+yum install java-1.8.0-openjdk* -y
+
+
+用户和密码都是：tomcat
+
+把上面这行注释掉即可！
+重启Tomcat，访问测试
+/opt/tomcat/bin/shutdown.sh 停止
+/opt/tomcat/bin/startup.sh 启动
+访问： http://192.168.66.102:8080/manager/html ，输入tomcat和tomcat，看到以下页面代表成功啦 
+<tomcat-users> 
+<role rolename="tomcat"/>
+<role rolename="role1"/>
+<role rolename="manager-script"/>
+<role rolename="manager-gui"/>
+<role rolename="manager-status"/>
+<role rolename="admin-gui"/>
+<role rolename="admin-script"/>
+<user username="tomcat" password="tomcat" roles="manager-gui,manager-script,tomcat,admin-gui,admin-script"/>
+</tomcat-users>
+
+
+注意：为了能够刚才配置的用户登录到Tomcat，还需要修改以下配置
+vi /opt/tomcat/webapps/manager/META-INF/context.xml
+
+<!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
