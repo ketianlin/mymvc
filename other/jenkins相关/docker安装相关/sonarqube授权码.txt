@@ -1,0 +1,48 @@
+fuzhou_ke: 7dab6193e220a076efe6be632926fbc11e914e46
+
+
+# must be unique in a given SonarQube instance
+sonar.projectKey=web_demo
+# this is the name and version displayed in the SonarQube UI. Was mandatory prior to SonarQube 6.1.
+sonar.projectName=web_demo
+sonar.projectVersion=1.0
+
+# Path is relative to the sonar-project.properties file. Replace "\" by "/" on Windows.
+# This property is optional if sonar.modules is set.
+sonar.sources=.
+sonar.exclusions=**/test/**,**/target/**
+
+sonar.java.source=1.8
+sonar.java.target=1.8
+
+# Encoding of the source code. Default is default system encoding
+sonar.sourceEncoding=UTF-8
+
+
+
+
+
+
+
+
+# 集群版
+spring:
+  application:
+    name: EUREKA-HA
+
+---
+server:
+  port: 10086
+spring:
+  # 指定profile=eureka-server1
+  profiles: eureka-server1
+eureka:
+  instance:
+    # 指定当profile=eureka-server1时，主机名是eureka-server1
+    hostname: 192.168.66.103
+  client:
+    service-url:
+     # 将自己注册到eureka-server1、eureka-server2这个Eureka上面去
+      defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
+
+---
