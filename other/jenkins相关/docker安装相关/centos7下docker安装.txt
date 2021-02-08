@@ -44,6 +44,15 @@ docker容器命令
 
 -- 启动一个有守护进程的nginx容器
 docker run -id nginx
+-- 指定本地端口挂载,如果是最新版本的可以不需要写
+docker run -id -p 90:80 nginx
+
+-- 开放访问端口
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
+
+
 
 
 
