@@ -57,4 +57,32 @@ firewall-cmd --list-all
 
 
 
+vi Dockerfile
+-----------------------------------------------------
+FROM openjdk:8-jdk-alpine
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+EXPOSE 10086
+ENTRYPOINT ["java","-jar","/app.jar"]
+----------------------------------------------------
+
+-- 先上传jar文件
+-- 然后在制作镜像
+docker build --build-arg JAR_FILE=tensquare_eureka_server-1.0-SNAPSHOT.jar -t eureka:v1 .
+
+-- 创建容器
+docker run -di -p 10086:10086 eureka:v1
+
+-- 查看日志
+docker ps -a
+docker logs -f a4ee7f2b8ce4
+
+-- 打开10086的端口
+firewall-cmd --zone=public --add-port=10086/tcp --permanent
+firewall-cmd --reload
+
+
+
+
+
 
