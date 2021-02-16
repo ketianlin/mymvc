@@ -1,0 +1,70 @@
+-- 先要安装docker-compose
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+-- 给docker-compose添加执行权限
+sudo chmod +x /usr/local/bin/docker-compose
+
+-- 查看docker-compose是否安装成功
+docker-compose -version
+
+-- 下载Harbor的压缩包（本课程版本为：v1.9.2）
+https://github.com/goharbor/harbor/releases
+
+-- 上传压缩包到linux，并解压
+tar -xzf harbor-offline-installer-v1.9.2.tgz
+mkdir /opt/harbor
+mv harbor/* /opt/harbor
+cd /opt/harbor
+
+-- 修改Harbor的配置
+vi harbor.yml
+修改hostname和port
+hostname: 192.168.0.93
+port: 85
+
+-- 安装Harbor
+./prepare
+./install.sh
+
+-- 启动Harbor
+docker-compose up -d 启动
+docker-compose stop 停止
+docker-compose restart 重新启动
+
+-- 访问Harbor
+http://192.168.0.93:85
+默认账户密码：admin/Harbor12345
+
+
+------------------------------------------------------
+
+-- 把镜像上传到Harbor
+1）给镜像打上标签
+docker tag eureka:v1 192.168.0.93:85/tensquare/eureka:v1
+2）推送镜像
+docker push 192.168.0.93:85/tensquare/eureka:v1
+
+The push refers to repository [192.168.66.102:85/tensquare/eureka] 
+Get https://192.168.66.102:85/v2/: http: server gave HTTP response to HTTPS client
+
+这时会出现以上报错，是因为Docker没有把Harbor加入信任列表中
+3）把Harbor地址加入到Docker信任列表,新增这个"insecure-registries": ["192.168.0.93:85"]
+vi /etc/docker/daemon.json
+
+{
+"registry-mirrors": ["https://yguksjpo.mirror.aliyuncs.com"],
+"insecure-registries": ["192.168.0.93:85"]
+}
+
+需要重启Docker
+systemctl restart docker
+
+4）再次执行推送命令，会提示权限不足
+denied: requested access to the resource is denied
+需要先登录Harbor，再推送镜像
+5）登录Harbor
+-- docker login -u 用户名 -p 密码 192.168.0.93:85
+docker login -u eric -p Eric111111 192.168.0.93:85
+
+
+
