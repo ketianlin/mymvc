@@ -66,5 +66,27 @@ denied: requested access to the resource is denied
 -- docker login -u 用户名 -p 密码 192.168.0.93:85
 docker login -u eric -p Eric111111 192.168.0.93:85
 
+-----------------------------------------------------------------------------
+
+从Harbor下载镜像
+需求：在192.168.0.95服务器完成从Harbor下载镜像
+1）安装Docker，并启动Docker（已经完成）
+2）修改Docker配置
+vi /etc/docker/daemon.json
+
+{
+"registry-mirrors": ["https://yguksjpo.mirror.aliyuncs.com"],
+"insecure-registries": ["192.168.0.93:85"]
+}
+
+重启docker
+systemctl restart docker
+
+3）先登录，再从Harbor下载镜像
+-- docker login -u 用户名 -p 密码 192.168.0.93:85
+docker login -u eric -p Eric111111 192.168.0.93:85
+-- 然后下载镜像,这个可以在web端那边复制地址
+docker pull 192.168.0.93:85/tensquare/eureka:v1
+
 
 
