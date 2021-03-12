@@ -1,6 +1,6 @@
-[nuxtjs官网](https://zh.nuxtjs.org/docs/2.x/get-started/installation)
+[nuxtjs官网](https://zh.nuxtjs.org/docs/2.x/get-started/installation)    [Vue SSR 指南](https://ssr.vuejs.org/zh/)
 
-解决babel找不到的问题,可以参考[这里](https://www.cnblogs.com/chenguangliang/p/10716721.html)
+解决babel找不到的问题,可以参考  [这里](https://www.cnblogs.com/chenguangliang/p/10716721.html)
 
 ```shell
 npm i webpack@5.24.2 -g
@@ -35,6 +35,12 @@ npm install axios --save
 视频在[这里](https://www.bilibili.com/video/BV1654y1r7rM?from=search&seid=16332788434753475868)
 
 [nuxtjs中文文档](https://www.nuxtjs.cn/guide/installation)
+
+##### 2.VUE实战之NUXT实战视频
+
+视频在 [这里](https://www.bilibili.com/video/BV1aE411s73G?p=3)
+
+[国内不能运行，是因为环境问题吗](https://github.com/vuejs/vue-hackernews-2.0/issues/322)
 
 
 
